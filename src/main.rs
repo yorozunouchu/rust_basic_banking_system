@@ -1,34 +1,34 @@
-trait Animal {
-    fn make_sound(&self) -> &str;
-
-    fn speak(&self) {
-        println!("The animal says {}", self.make_sound());
-    }
-}
-
-struct Dog;
-struct Cat;
-
-impl Animal for Dog {
-    fn make_sound(&self) -> &str {
-        "woof"
-    }
-
-    fn speak(&self) {
-        println!("The dog barks {}", self.make_sound());
-    }
-}
-
-impl Animal for Cat {
-    fn make_sound(&self) -> &str {
-        "meow"
-    }
-}
-
 fn main() {
-    let dog = Dog;
-    let cat = Cat;
+    trait Shape {
+        fn area(&self) -> f64;
+    }
 
-    dog.speak();
-    cat.speak();
+    struct Circle {
+        radius: f64,
+    }
+
+    struct Rectangle {
+        width: f64,
+        height: f64,
+    }
+
+    impl Shape for Circle {
+        fn area(&self) -> f64 {
+            std::f64::consts::PI * (self.radius * self.radius)
+        }
+    }
+
+    impl Shape for Rectangle {
+        fn area(&self) -> f64 {
+            self.width * self.height
+        }
+    }
+
+    let mut shapes: Vec<Box<dyn Shape>> = Vec::new();
+    shapes.push(Box::new(Circle { radius: 5.0 }));
+    shapes.push(Box::new(Rectangle { width: 4.0, height: 6.0}));
+
+    for shape in shapes {
+        println!("Area: {}", shape.area());
+    }
 }

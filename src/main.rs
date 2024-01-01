@@ -1,34 +1,39 @@
+trait Vehicle {
+    type Fuel;
+
+    fn refuel(&mut self, fuel: Self::Fuel);
+}
+
+struct ElectricCar {
+    battery_level: u32,
+}
+
+struct GasCar {
+    gas_level: u32,
+}
+
+impl Vehicle for ElectricCar {
+    type Fuel = u32;
+
+    fn refuel(&mut self, charge: Self::Fuel) {
+        self.battery_level += charge;
+        println!("Battery charged to {}", self.battery_level);
+    }
+}
+
+impl Vehicle for GasCar {
+    type Fuel = f32;
+
+    fn refuel(&mut self, gas: Self::Fuel) {
+        self.gas_level += (gas * 100.0) as u32;
+        println!("Gas tank filled to {}", self.gas_level);
+    }
+}
+
 fn main() {
-    trait Shape {
-        fn area(&self) -> f64;
-    }
+    let mut tesla = ElectricCar { battery_level: 50 };
+    let mut ford = GasCar { gas_level: 40 };
 
-    struct Circle {
-        radius: f64,
-    }
-
-    struct Rectangle {
-        width: f64,
-        height: f64,
-    }
-
-    impl Shape for Circle {
-        fn area(&self) -> f64 {
-            std::f64::consts::PI * (self.radius * self.radius)
-        }
-    }
-
-    impl Shape for Rectangle {
-        fn area(&self) -> f64 {
-            self.width * self.height
-        }
-    }
-
-    let mut shapes: Vec<Box<dyn Shape>> = Vec::new();
-    shapes.push(Box::new(Circle { radius: 5.0 }));
-    shapes.push(Box::new(Rectangle { width: 4.0, height: 6.0}));
-
-    for shape in shapes {
-        println!("Area: {}", shape.area());
-    }
+    tesla.refuel(10);
+    ford.refuel(0.2);
 }

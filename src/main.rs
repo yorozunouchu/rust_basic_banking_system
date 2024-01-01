@@ -1,39 +1,34 @@
-trait Printable {
-    fn print(&self);
-}
+trait Animal {
+    fn make_sound(&self) -> &str;
 
-fn print_something<T: Printable>(item: &T) {
-    item.print();
-}
-
-struct Book {
-    title: String,
-}
-
-impl Printable for Book {
-    fn print(&self) {
-        println!("Book: {}", self.title);
+    fn speak(&self) {
+        println!("The animal says {}", self.make_sound());
     }
 }
 
-struct Magazine {
-    name: String,
+struct Dog;
+struct Cat;
+
+impl Animal for Dog {
+    fn make_sound(&self) -> &str {
+        "woof"
+    }
+
+    fn speak(&self) {
+        println!("The dog barks {}", self.make_sound());
+    }
 }
 
-impl Printable for Magazine {
-    fn print(&self) {
-        println!("Magazine: {}", self.name);
+impl Animal for Cat {
+    fn make_sound(&self) -> &str {
+        "meow"
     }
 }
 
 fn main() {
-    let book = Book {
-        title: String::from("Rust Programming Language"),
-    };
-    let magazine = Magazine {
-        name: String::from("The New Yorker"),
-    };
+    let dog = Dog;
+    let cat = Cat;
 
-    print_something(&book);
-    print_something(&magazine);
+    dog.speak();
+    cat.speak();
 }
